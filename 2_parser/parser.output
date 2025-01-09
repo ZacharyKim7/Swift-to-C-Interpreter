@@ -1,0 +1,2358 @@
+Terminals which are not used
+
+   TOKEN_ERROR
+   TOKEN_EOF
+   TOKEN_KEYWORD_BREAK
+   TOKEN_KEYWORD_FUNC
+   TOKEN_KEYWORD_NOT
+   TOKEN_KEYWORD_RETURN
+   TOKEN_COLON
+   TOKEN_PERCENT
+
+
+Grammar
+
+    0 $accept: file $end
+
+    1 file: statements
+
+    2 statements: statements statement
+    3           | statement
+
+    4 statement: compound_stmt
+    5          | simple_stmts
+
+    6 compound_stmt: if_stmt
+    7              | for_stmt
+    8              | while_stmt
+
+    9 if_stmt: TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE elif_stmt
+   10        | TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE else_block
+   11        | TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE
+
+   12 elif_stmt: TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE elif_stmt
+   13          | TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE else_block
+   14          | TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE
+
+   15 else_block: TOKEN_KEYWORD_ELSE TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE
+
+   16 while_stmt: TOKEN_KEYWORD_WHILE named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE
+
+   17 for_stmt: TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER TOKEN_KEYWORD_IN TOKEN_RANGE TOKEN_IDENTIFIER TOKEN_LEFT_BRACE statements TOKEN_RIGHT_BRACE
+   18         | TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER TOKEN_KEYWORD_IN TOKEN_IDENTIFIER TOKEN_LEFT_BRACE statements TOKEN_RIGHT_BRACE
+
+   19 block: TOKEN_NEWLINE statements
+
+   20 named_expression: assignment
+   21                 | expression
+
+   22 assignment: TOKEN_KEYWORD_LET TOKEN_IDENTIFIER TOKEN_ASSIGNMENT expression
+   23           | TOKEN_KEYWORD_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT expression
+   24           | TOKEN_IDENTIFIER TOKEN_ASSIGNMENT expression
+   25           | array_element TOKEN_ASSIGNMENT expression
+
+   26 array_element: TOKEN_IDENTIFIER TOKEN_LEFT_BRACKET expression TOKEN_RIGHT_BRACKET
+
+   27 expressions: expressions TOKEN_COMMA expression
+   28            | expression
+
+   29 simple_stmts: simple_stmt TOKEN_NEWLINE
+
+   30 simple_stmt: assignment
+   31            | import_stmt
+   32            | expressions
+   33            | print_stmt
+   34            | /* empty */
+
+   35 print_stmt: TOKEN_KEYWORD_PRINT TOKEN_LEFT_PARENTHESIS arguments TOKEN_RIGHT_PARENTHESIS
+
+   36 import_stmt: TOKEN_KEYWORD_IMPORT TOKEN_IDENTIFIER
+
+   37 expression: conjunction
+
+   38 conjunction: conjunction TOKEN_AND disjunction
+   39            | disjunction
+
+   40 disjunction: disjunction TOKEN_OR inversion
+   41            | inversion
+
+   42 inversion: TOKEN_NOT comparison
+   43          | comparison
+
+   44 comparison: sum comparison_op sum
+   45           | sum
+
+   46 comparison_op: TOKEN_GREATER_THAN
+   47              | TOKEN_LESS_THAN
+   48              | TOKEN_EQUALITY
+   49              | TOKEN_GREATER_THAN_EQUAL
+   50              | TOKEN_LESS_THAN_EQUAL
+   51              | TOKEN_NOT_EQUAL
+
+   52 sum: sum TOKEN_PLUS term
+   53    | sum TOKEN_MINUS term
+   54    | term
+
+   55 term: term TOKEN_MULTIPLY factor
+   56     | term TOKEN_DIVIDE factor
+   57     | factor
+
+   58 factor: TOKEN_PLUS factor
+   59       | TOKEN_MINUS factor
+   60       | power
+
+   61 power: primary TOKEN_POWER factor
+   62      | primary
+
+   63 primary: primary TOKEN_DOT TOKEN_IDENTIFIER
+   64        | primary TOKEN_DOT TOKEN_KEYWORD_COUNT
+   65        | primary TOKEN_LEFT_PARENTHESIS arguments TOKEN_RIGHT_PARENTHESIS
+   66        | primary TOKEN_DOT TOKEN_SQUAREROOT TOKEN_LEFT_PARENTHESIS TOKEN_RIGHT_PARENTHESIS
+   67        | TOKEN_IDENTIFIER TOKEN_LEFT_BRACKET expression TOKEN_RIGHT_BRACKET
+   68        | atom
+
+   69 arguments: arguments TOKEN_COMMA expression
+   70          | expression
+   71          | /* empty */
+
+   72 atom: TOKEN_IDENTIFIER
+   73     | TOKEN_KEYWORD_TRUE
+   74     | TOKEN_KEYWORD_FALSE
+   75     | TOKEN_STRING
+   76     | TOKEN_INTEGER
+   77     | TOKEN_DOUBLE
+   78     | TOKEN_LEFT_PARENTHESIS expression TOKEN_RIGHT_PARENTHESIS
+   79     | array
+
+   80 array: TOKEN_LEFT_BRACKET elements TOKEN_RIGHT_BRACKET
+
+   81 elements: elements TOKEN_COMMA atom
+   82         | atom
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+TOKEN_ERROR (258)
+TOKEN_EOF (259)
+TOKEN_KEYWORD_BREAK (260)
+TOKEN_KEYWORD_COUNT (261) 64
+TOKEN_KEYWORD_FALSE (262) 74
+TOKEN_KEYWORD_FOR (263) 17 18
+TOKEN_KEYWORD_FUNC (264)
+TOKEN_KEYWORD_IN (265) 17 18
+TOKEN_KEYWORD_IF (266) 9 10 11 12 13 14
+TOKEN_KEYWORD_ELSE (267) 12 13 14 15
+TOKEN_KEYWORD_IMPORT (268) 36
+TOKEN_KEYWORD_LET (269) 22
+TOKEN_KEYWORD_NOT (270)
+TOKEN_KEYWORD_PRINT (271) 35
+TOKEN_KEYWORD_RETURN (272)
+TOKEN_KEYWORD_TRUE (273) 73
+TOKEN_KEYWORD_VAR (274) 23
+TOKEN_KEYWORD_WHILE (275) 16
+TOKEN_SQUAREROOT (276) 66
+TOKEN_IDENTIFIER (277) 17 18 22 23 24 26 36 63 67 72
+TOKEN_INTEGER (278) 76
+TOKEN_LEFT_PARENTHESIS (279) 35 65 66 78
+TOKEN_RIGHT_PARENTHESIS (280) 35 65 66 78
+TOKEN_LEFT_BRACKET (281) 26 67 80
+TOKEN_RIGHT_BRACKET (282) 26 67 80
+TOKEN_LEFT_BRACE (283) 9 10 11 12 13 14 15 16 17 18
+TOKEN_RIGHT_BRACE (284) 9 10 11 12 13 14 15 16 17 18
+TOKEN_STRING (285) 75
+TOKEN_NEWLINE (286) 19 29
+TOKEN_ASSIGNMENT (287) 22 23 24 25
+TOKEN_EQUALITY (288) 48
+TOKEN_POWER (289) 61
+TOKEN_MULTIPLY (290) 55
+TOKEN_MINUS (291) 53 59
+TOKEN_PLUS (292) 52 58
+TOKEN_DIVIDE (293) 56
+TOKEN_COMMA (294) 27 69 81
+TOKEN_DOT (295) 63 64 66
+TOKEN_RANGE (296) 17
+TOKEN_COLON (297)
+TOKEN_PERCENT (298)
+TOKEN_GREATER_THAN (299) 46
+TOKEN_GREATER_THAN_EQUAL (300) 49
+TOKEN_LESS_THAN (301) 47
+TOKEN_LESS_THAN_EQUAL (302) 50
+TOKEN_NOT_EQUAL (303) 51
+TOKEN_AND (304) 38
+TOKEN_OR (305) 40
+TOKEN_NOT (306) 42
+TOKEN_DOUBLE (307) 77
+
+
+Nonterminals, with rules where they appear
+
+$accept (53)
+    on left: 0
+file (54)
+    on left: 1, on right: 0
+statements (55)
+    on left: 2 3, on right: 1 2 17 18 19
+statement (56)
+    on left: 4 5, on right: 2 3
+compound_stmt (57)
+    on left: 6 7 8, on right: 4
+if_stmt (58)
+    on left: 9 10 11, on right: 6
+elif_stmt (59)
+    on left: 12 13 14, on right: 9 12
+else_block (60)
+    on left: 15, on right: 10 13
+while_stmt (61)
+    on left: 16, on right: 8
+for_stmt (62)
+    on left: 17 18, on right: 7
+block (63)
+    on left: 19, on right: 9 10 11 12 13 14 15 16
+named_expression (64)
+    on left: 20 21, on right: 9 10 11 12 13 14 16
+assignment (65)
+    on left: 22 23 24 25, on right: 20 30
+array_element (66)
+    on left: 26, on right: 25
+expressions (67)
+    on left: 27 28, on right: 27 32
+simple_stmts (68)
+    on left: 29, on right: 5
+simple_stmt (69)
+    on left: 30 31 32 33 34, on right: 29
+print_stmt (70)
+    on left: 35, on right: 33
+import_stmt (71)
+    on left: 36, on right: 31
+expression (72)
+    on left: 37, on right: 21 22 23 24 25 26 27 28 67 69 70 78
+conjunction (73)
+    on left: 38 39, on right: 37 38
+disjunction (74)
+    on left: 40 41, on right: 38 39 40
+inversion (75)
+    on left: 42 43, on right: 40 41
+comparison (76)
+    on left: 44 45, on right: 42 43
+comparison_op (77)
+    on left: 46 47 48 49 50 51, on right: 44
+sum (78)
+    on left: 52 53 54, on right: 44 45 52 53
+term (79)
+    on left: 55 56 57, on right: 52 53 54 55 56
+factor (80)
+    on left: 58 59 60, on right: 55 56 57 58 59 61
+power (81)
+    on left: 61 62, on right: 60
+primary (82)
+    on left: 63 64 65 66 67 68, on right: 61 62 63 64 65 66
+arguments (83)
+    on left: 69 70 71, on right: 35 65 69
+atom (84)
+    on left: 72 73 74 75 76 77 78 79, on right: 68 81 82
+array (85)
+    on left: 80, on right: 79
+elements (86)
+    on left: 81 82, on right: 80 81
+
+
+state 0
+
+    0 $accept: . file $end
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_FOR       shift, and go to state 2
+    TOKEN_KEYWORD_IF        shift, and go to state 3
+    TOKEN_KEYWORD_IMPORT    shift, and go to state 4
+    TOKEN_KEYWORD_LET       shift, and go to state 5
+    TOKEN_KEYWORD_PRINT     shift, and go to state 6
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_KEYWORD_VAR       shift, and go to state 8
+    TOKEN_KEYWORD_WHILE     shift, and go to state 9
+    TOKEN_IDENTIFIER        shift, and go to state 10
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    $default  reduce using rule 34 (simple_stmt)
+
+    file           go to state 19
+    statements     go to state 20
+    statement      go to state 21
+    compound_stmt  go to state 22
+    if_stmt        go to state 23
+    while_stmt     go to state 24
+    for_stmt       go to state 25
+    assignment     go to state 26
+    array_element  go to state 27
+    expressions    go to state 28
+    simple_stmts   go to state 29
+    simple_stmt    go to state 30
+    print_stmt     go to state 31
+    import_stmt    go to state 32
+    expression     go to state 33
+    conjunction    go to state 34
+    disjunction    go to state 35
+    inversion      go to state 36
+    comparison     go to state 37
+    sum            go to state 38
+    term           go to state 39
+    factor         go to state 40
+    power          go to state 41
+    primary        go to state 42
+    atom           go to state 43
+    array          go to state 44
+
+
+state 1
+
+   74 atom: TOKEN_KEYWORD_FALSE .
+
+    $default  reduce using rule 74 (atom)
+
+
+state 2
+
+   17 for_stmt: TOKEN_KEYWORD_FOR . TOKEN_IDENTIFIER TOKEN_KEYWORD_IN TOKEN_RANGE TOKEN_IDENTIFIER TOKEN_LEFT_BRACE statements TOKEN_RIGHT_BRACE
+   18         | TOKEN_KEYWORD_FOR . TOKEN_IDENTIFIER TOKEN_KEYWORD_IN TOKEN_IDENTIFIER TOKEN_LEFT_BRACE statements TOKEN_RIGHT_BRACE
+
+    TOKEN_IDENTIFIER  shift, and go to state 45
+
+
+state 3
+
+    9 if_stmt: TOKEN_KEYWORD_IF . named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE elif_stmt
+   10        | TOKEN_KEYWORD_IF . named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE else_block
+   11        | TOKEN_KEYWORD_IF . named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_LET       shift, and go to state 5
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_KEYWORD_VAR       shift, and go to state 8
+    TOKEN_IDENTIFIER        shift, and go to state 10
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    named_expression  go to state 46
+    assignment        go to state 47
+    array_element     go to state 27
+    expression        go to state 48
+    conjunction       go to state 34
+    disjunction       go to state 35
+    inversion         go to state 36
+    comparison        go to state 37
+    sum               go to state 38
+    term              go to state 39
+    factor            go to state 40
+    power             go to state 41
+    primary           go to state 42
+    atom              go to state 43
+    array             go to state 44
+
+
+state 4
+
+   36 import_stmt: TOKEN_KEYWORD_IMPORT . TOKEN_IDENTIFIER
+
+    TOKEN_IDENTIFIER  shift, and go to state 49
+
+
+state 5
+
+   22 assignment: TOKEN_KEYWORD_LET . TOKEN_IDENTIFIER TOKEN_ASSIGNMENT expression
+
+    TOKEN_IDENTIFIER  shift, and go to state 50
+
+
+state 6
+
+   35 print_stmt: TOKEN_KEYWORD_PRINT . TOKEN_LEFT_PARENTHESIS arguments TOKEN_RIGHT_PARENTHESIS
+
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 51
+
+
+state 7
+
+   73 atom: TOKEN_KEYWORD_TRUE .
+
+    $default  reduce using rule 73 (atom)
+
+
+state 8
+
+   23 assignment: TOKEN_KEYWORD_VAR . TOKEN_IDENTIFIER TOKEN_ASSIGNMENT expression
+
+    TOKEN_IDENTIFIER  shift, and go to state 52
+
+
+state 9
+
+   16 while_stmt: TOKEN_KEYWORD_WHILE . named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_LET       shift, and go to state 5
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_KEYWORD_VAR       shift, and go to state 8
+    TOKEN_IDENTIFIER        shift, and go to state 10
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    named_expression  go to state 53
+    assignment        go to state 47
+    array_element     go to state 27
+    expression        go to state 48
+    conjunction       go to state 34
+    disjunction       go to state 35
+    inversion         go to state 36
+    comparison        go to state 37
+    sum               go to state 38
+    term              go to state 39
+    factor            go to state 40
+    power             go to state 41
+    primary           go to state 42
+    atom              go to state 43
+    array             go to state 44
+
+
+state 10
+
+   24 assignment: TOKEN_IDENTIFIER . TOKEN_ASSIGNMENT expression
+   26 array_element: TOKEN_IDENTIFIER . TOKEN_LEFT_BRACKET expression TOKEN_RIGHT_BRACKET
+   67 primary: TOKEN_IDENTIFIER . TOKEN_LEFT_BRACKET expression TOKEN_RIGHT_BRACKET
+   72 atom: TOKEN_IDENTIFIER .
+
+    TOKEN_LEFT_BRACKET  shift, and go to state 54
+    TOKEN_ASSIGNMENT    shift, and go to state 55
+
+    $default  reduce using rule 72 (atom)
+
+
+state 11
+
+   76 atom: TOKEN_INTEGER .
+
+    $default  reduce using rule 76 (atom)
+
+
+state 12
+
+   78 atom: TOKEN_LEFT_PARENTHESIS . expression TOKEN_RIGHT_PARENTHESIS
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    expression   go to state 57
+    conjunction  go to state 34
+    disjunction  go to state 35
+    inversion    go to state 36
+    comparison   go to state 37
+    sum          go to state 38
+    term         go to state 39
+    factor       go to state 40
+    power        go to state 41
+    primary      go to state 42
+    atom         go to state 43
+    array        go to state 44
+
+
+state 13
+
+   80 array: TOKEN_LEFT_BRACKET . elements TOKEN_RIGHT_BRACKET
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 58
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    atom      go to state 59
+    array     go to state 44
+    elements  go to state 60
+
+
+state 14
+
+   75 atom: TOKEN_STRING .
+
+    $default  reduce using rule 75 (atom)
+
+
+state 15
+
+   59 factor: TOKEN_MINUS . factor
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    factor   go to state 61
+    power    go to state 41
+    primary  go to state 42
+    atom     go to state 43
+    array    go to state 44
+
+
+state 16
+
+   58 factor: TOKEN_PLUS . factor
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    factor   go to state 62
+    power    go to state 41
+    primary  go to state 42
+    atom     go to state 43
+    array    go to state 44
+
+
+state 17
+
+   42 inversion: TOKEN_NOT . comparison
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    comparison  go to state 63
+    sum         go to state 38
+    term        go to state 39
+    factor      go to state 40
+    power       go to state 41
+    primary     go to state 42
+    atom        go to state 43
+    array       go to state 44
+
+
+state 18
+
+   77 atom: TOKEN_DOUBLE .
+
+    $default  reduce using rule 77 (atom)
+
+
+state 19
+
+    0 $accept: file . $end
+
+    $end  shift, and go to state 64
+
+
+state 20
+
+    1 file: statements .
+    2 statements: statements . statement
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_FOR       shift, and go to state 2
+    TOKEN_KEYWORD_IF        shift, and go to state 3
+    TOKEN_KEYWORD_IMPORT    shift, and go to state 4
+    TOKEN_KEYWORD_LET       shift, and go to state 5
+    TOKEN_KEYWORD_PRINT     shift, and go to state 6
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_KEYWORD_VAR       shift, and go to state 8
+    TOKEN_KEYWORD_WHILE     shift, and go to state 9
+    TOKEN_IDENTIFIER        shift, and go to state 10
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    TOKEN_NEWLINE  reduce using rule 34 (simple_stmt)
+    $default       reduce using rule 1 (file)
+
+    statement      go to state 65
+    compound_stmt  go to state 22
+    if_stmt        go to state 23
+    while_stmt     go to state 24
+    for_stmt       go to state 25
+    assignment     go to state 26
+    array_element  go to state 27
+    expressions    go to state 28
+    simple_stmts   go to state 29
+    simple_stmt    go to state 30
+    print_stmt     go to state 31
+    import_stmt    go to state 32
+    expression     go to state 33
+    conjunction    go to state 34
+    disjunction    go to state 35
+    inversion      go to state 36
+    comparison     go to state 37
+    sum            go to state 38
+    term           go to state 39
+    factor         go to state 40
+    power          go to state 41
+    primary        go to state 42
+    atom           go to state 43
+    array          go to state 44
+
+
+state 21
+
+    3 statements: statement .
+
+    $default  reduce using rule 3 (statements)
+
+
+state 22
+
+    4 statement: compound_stmt .
+
+    $default  reduce using rule 4 (statement)
+
+
+state 23
+
+    6 compound_stmt: if_stmt .
+
+    $default  reduce using rule 6 (compound_stmt)
+
+
+state 24
+
+    8 compound_stmt: while_stmt .
+
+    $default  reduce using rule 8 (compound_stmt)
+
+
+state 25
+
+    7 compound_stmt: for_stmt .
+
+    $default  reduce using rule 7 (compound_stmt)
+
+
+state 26
+
+   30 simple_stmt: assignment .
+
+    $default  reduce using rule 30 (simple_stmt)
+
+
+state 27
+
+   25 assignment: array_element . TOKEN_ASSIGNMENT expression
+
+    TOKEN_ASSIGNMENT  shift, and go to state 66
+
+
+state 28
+
+   27 expressions: expressions . TOKEN_COMMA expression
+   32 simple_stmt: expressions .
+
+    TOKEN_COMMA  shift, and go to state 67
+
+    $default  reduce using rule 32 (simple_stmt)
+
+
+state 29
+
+    5 statement: simple_stmts .
+
+    $default  reduce using rule 5 (statement)
+
+
+state 30
+
+   29 simple_stmts: simple_stmt . TOKEN_NEWLINE
+
+    TOKEN_NEWLINE  shift, and go to state 68
+
+
+state 31
+
+   33 simple_stmt: print_stmt .
+
+    $default  reduce using rule 33 (simple_stmt)
+
+
+state 32
+
+   31 simple_stmt: import_stmt .
+
+    $default  reduce using rule 31 (simple_stmt)
+
+
+state 33
+
+   28 expressions: expression .
+
+    $default  reduce using rule 28 (expressions)
+
+
+state 34
+
+   37 expression: conjunction .
+   38 conjunction: conjunction . TOKEN_AND disjunction
+
+    TOKEN_AND  shift, and go to state 69
+
+    $default  reduce using rule 37 (expression)
+
+
+state 35
+
+   39 conjunction: disjunction .
+   40 disjunction: disjunction . TOKEN_OR inversion
+
+    TOKEN_OR  shift, and go to state 70
+
+    $default  reduce using rule 39 (conjunction)
+
+
+state 36
+
+   41 disjunction: inversion .
+
+    $default  reduce using rule 41 (disjunction)
+
+
+state 37
+
+   43 inversion: comparison .
+
+    $default  reduce using rule 43 (inversion)
+
+
+state 38
+
+   44 comparison: sum . comparison_op sum
+   45           | sum .
+   52 sum: sum . TOKEN_PLUS term
+   53    | sum . TOKEN_MINUS term
+
+    TOKEN_EQUALITY            shift, and go to state 71
+    TOKEN_MINUS               shift, and go to state 72
+    TOKEN_PLUS                shift, and go to state 73
+    TOKEN_GREATER_THAN        shift, and go to state 74
+    TOKEN_GREATER_THAN_EQUAL  shift, and go to state 75
+    TOKEN_LESS_THAN           shift, and go to state 76
+    TOKEN_LESS_THAN_EQUAL     shift, and go to state 77
+    TOKEN_NOT_EQUAL           shift, and go to state 78
+
+    $default  reduce using rule 45 (comparison)
+
+    comparison_op  go to state 79
+
+
+state 39
+
+   54 sum: term .
+   55 term: term . TOKEN_MULTIPLY factor
+   56     | term . TOKEN_DIVIDE factor
+
+    TOKEN_MULTIPLY  shift, and go to state 80
+    TOKEN_DIVIDE    shift, and go to state 81
+
+    $default  reduce using rule 54 (sum)
+
+
+state 40
+
+   57 term: factor .
+
+    $default  reduce using rule 57 (term)
+
+
+state 41
+
+   60 factor: power .
+
+    $default  reduce using rule 60 (factor)
+
+
+state 42
+
+   61 power: primary . TOKEN_POWER factor
+   62      | primary .
+   63 primary: primary . TOKEN_DOT TOKEN_IDENTIFIER
+   64        | primary . TOKEN_DOT TOKEN_KEYWORD_COUNT
+   65        | primary . TOKEN_LEFT_PARENTHESIS arguments TOKEN_RIGHT_PARENTHESIS
+   66        | primary . TOKEN_DOT TOKEN_SQUAREROOT TOKEN_LEFT_PARENTHESIS TOKEN_RIGHT_PARENTHESIS
+
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 82
+    TOKEN_POWER             shift, and go to state 83
+    TOKEN_DOT               shift, and go to state 84
+
+    $default  reduce using rule 62 (power)
+
+
+state 43
+
+   68 primary: atom .
+
+    $default  reduce using rule 68 (primary)
+
+
+state 44
+
+   79 atom: array .
+
+    $default  reduce using rule 79 (atom)
+
+
+state 45
+
+   17 for_stmt: TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER . TOKEN_KEYWORD_IN TOKEN_RANGE TOKEN_IDENTIFIER TOKEN_LEFT_BRACE statements TOKEN_RIGHT_BRACE
+   18         | TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER . TOKEN_KEYWORD_IN TOKEN_IDENTIFIER TOKEN_LEFT_BRACE statements TOKEN_RIGHT_BRACE
+
+    TOKEN_KEYWORD_IN  shift, and go to state 85
+
+
+state 46
+
+    9 if_stmt: TOKEN_KEYWORD_IF named_expression . TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE elif_stmt
+   10        | TOKEN_KEYWORD_IF named_expression . TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE else_block
+   11        | TOKEN_KEYWORD_IF named_expression . TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE
+
+    TOKEN_LEFT_BRACE  shift, and go to state 86
+
+
+state 47
+
+   20 named_expression: assignment .
+
+    $default  reduce using rule 20 (named_expression)
+
+
+state 48
+
+   21 named_expression: expression .
+
+    $default  reduce using rule 21 (named_expression)
+
+
+state 49
+
+   36 import_stmt: TOKEN_KEYWORD_IMPORT TOKEN_IDENTIFIER .
+
+    $default  reduce using rule 36 (import_stmt)
+
+
+state 50
+
+   22 assignment: TOKEN_KEYWORD_LET TOKEN_IDENTIFIER . TOKEN_ASSIGNMENT expression
+
+    TOKEN_ASSIGNMENT  shift, and go to state 87
+
+
+state 51
+
+   35 print_stmt: TOKEN_KEYWORD_PRINT TOKEN_LEFT_PARENTHESIS . arguments TOKEN_RIGHT_PARENTHESIS
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    $default  reduce using rule 71 (arguments)
+
+    expression   go to state 88
+    conjunction  go to state 34
+    disjunction  go to state 35
+    inversion    go to state 36
+    comparison   go to state 37
+    sum          go to state 38
+    term         go to state 39
+    factor       go to state 40
+    power        go to state 41
+    primary      go to state 42
+    arguments    go to state 89
+    atom         go to state 43
+    array        go to state 44
+
+
+state 52
+
+   23 assignment: TOKEN_KEYWORD_VAR TOKEN_IDENTIFIER . TOKEN_ASSIGNMENT expression
+
+    TOKEN_ASSIGNMENT  shift, and go to state 90
+
+
+state 53
+
+   16 while_stmt: TOKEN_KEYWORD_WHILE named_expression . TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE
+
+    TOKEN_LEFT_BRACE  shift, and go to state 91
+
+
+state 54
+
+   26 array_element: TOKEN_IDENTIFIER TOKEN_LEFT_BRACKET . expression TOKEN_RIGHT_BRACKET
+   67 primary: TOKEN_IDENTIFIER TOKEN_LEFT_BRACKET . expression TOKEN_RIGHT_BRACKET
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    expression   go to state 92
+    conjunction  go to state 34
+    disjunction  go to state 35
+    inversion    go to state 36
+    comparison   go to state 37
+    sum          go to state 38
+    term         go to state 39
+    factor       go to state 40
+    power        go to state 41
+    primary      go to state 42
+    atom         go to state 43
+    array        go to state 44
+
+
+state 55
+
+   24 assignment: TOKEN_IDENTIFIER TOKEN_ASSIGNMENT . expression
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    expression   go to state 93
+    conjunction  go to state 34
+    disjunction  go to state 35
+    inversion    go to state 36
+    comparison   go to state 37
+    sum          go to state 38
+    term         go to state 39
+    factor       go to state 40
+    power        go to state 41
+    primary      go to state 42
+    atom         go to state 43
+    array        go to state 44
+
+
+state 56
+
+   67 primary: TOKEN_IDENTIFIER . TOKEN_LEFT_BRACKET expression TOKEN_RIGHT_BRACKET
+   72 atom: TOKEN_IDENTIFIER .
+
+    TOKEN_LEFT_BRACKET  shift, and go to state 94
+
+    $default  reduce using rule 72 (atom)
+
+
+state 57
+
+   78 atom: TOKEN_LEFT_PARENTHESIS expression . TOKEN_RIGHT_PARENTHESIS
+
+    TOKEN_RIGHT_PARENTHESIS  shift, and go to state 95
+
+
+state 58
+
+   72 atom: TOKEN_IDENTIFIER .
+
+    $default  reduce using rule 72 (atom)
+
+
+state 59
+
+   82 elements: atom .
+
+    $default  reduce using rule 82 (elements)
+
+
+state 60
+
+   80 array: TOKEN_LEFT_BRACKET elements . TOKEN_RIGHT_BRACKET
+   81 elements: elements . TOKEN_COMMA atom
+
+    TOKEN_RIGHT_BRACKET  shift, and go to state 96
+    TOKEN_COMMA          shift, and go to state 97
+
+
+state 61
+
+   59 factor: TOKEN_MINUS factor .
+
+    $default  reduce using rule 59 (factor)
+
+
+state 62
+
+   58 factor: TOKEN_PLUS factor .
+
+    $default  reduce using rule 58 (factor)
+
+
+state 63
+
+   42 inversion: TOKEN_NOT comparison .
+
+    $default  reduce using rule 42 (inversion)
+
+
+state 64
+
+    0 $accept: file $end .
+
+    $default  accept
+
+
+state 65
+
+    2 statements: statements statement .
+
+    $default  reduce using rule 2 (statements)
+
+
+state 66
+
+   25 assignment: array_element TOKEN_ASSIGNMENT . expression
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    expression   go to state 98
+    conjunction  go to state 34
+    disjunction  go to state 35
+    inversion    go to state 36
+    comparison   go to state 37
+    sum          go to state 38
+    term         go to state 39
+    factor       go to state 40
+    power        go to state 41
+    primary      go to state 42
+    atom         go to state 43
+    array        go to state 44
+
+
+state 67
+
+   27 expressions: expressions TOKEN_COMMA . expression
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    expression   go to state 99
+    conjunction  go to state 34
+    disjunction  go to state 35
+    inversion    go to state 36
+    comparison   go to state 37
+    sum          go to state 38
+    term         go to state 39
+    factor       go to state 40
+    power        go to state 41
+    primary      go to state 42
+    atom         go to state 43
+    array        go to state 44
+
+
+state 68
+
+   29 simple_stmts: simple_stmt TOKEN_NEWLINE .
+
+    $default  reduce using rule 29 (simple_stmts)
+
+
+state 69
+
+   38 conjunction: conjunction TOKEN_AND . disjunction
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    disjunction  go to state 100
+    inversion    go to state 36
+    comparison   go to state 37
+    sum          go to state 38
+    term         go to state 39
+    factor       go to state 40
+    power        go to state 41
+    primary      go to state 42
+    atom         go to state 43
+    array        go to state 44
+
+
+state 70
+
+   40 disjunction: disjunction TOKEN_OR . inversion
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    inversion   go to state 101
+    comparison  go to state 37
+    sum         go to state 38
+    term        go to state 39
+    factor      go to state 40
+    power       go to state 41
+    primary     go to state 42
+    atom        go to state 43
+    array       go to state 44
+
+
+state 71
+
+   48 comparison_op: TOKEN_EQUALITY .
+
+    $default  reduce using rule 48 (comparison_op)
+
+
+state 72
+
+   53 sum: sum TOKEN_MINUS . term
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    term     go to state 102
+    factor   go to state 40
+    power    go to state 41
+    primary  go to state 42
+    atom     go to state 43
+    array    go to state 44
+
+
+state 73
+
+   52 sum: sum TOKEN_PLUS . term
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    term     go to state 103
+    factor   go to state 40
+    power    go to state 41
+    primary  go to state 42
+    atom     go to state 43
+    array    go to state 44
+
+
+state 74
+
+   46 comparison_op: TOKEN_GREATER_THAN .
+
+    $default  reduce using rule 46 (comparison_op)
+
+
+state 75
+
+   49 comparison_op: TOKEN_GREATER_THAN_EQUAL .
+
+    $default  reduce using rule 49 (comparison_op)
+
+
+state 76
+
+   47 comparison_op: TOKEN_LESS_THAN .
+
+    $default  reduce using rule 47 (comparison_op)
+
+
+state 77
+
+   50 comparison_op: TOKEN_LESS_THAN_EQUAL .
+
+    $default  reduce using rule 50 (comparison_op)
+
+
+state 78
+
+   51 comparison_op: TOKEN_NOT_EQUAL .
+
+    $default  reduce using rule 51 (comparison_op)
+
+
+state 79
+
+   44 comparison: sum comparison_op . sum
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    sum      go to state 104
+    term     go to state 39
+    factor   go to state 40
+    power    go to state 41
+    primary  go to state 42
+    atom     go to state 43
+    array    go to state 44
+
+
+state 80
+
+   55 term: term TOKEN_MULTIPLY . factor
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    factor   go to state 105
+    power    go to state 41
+    primary  go to state 42
+    atom     go to state 43
+    array    go to state 44
+
+
+state 81
+
+   56 term: term TOKEN_DIVIDE . factor
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    factor   go to state 106
+    power    go to state 41
+    primary  go to state 42
+    atom     go to state 43
+    array    go to state 44
+
+
+state 82
+
+   65 primary: primary TOKEN_LEFT_PARENTHESIS . arguments TOKEN_RIGHT_PARENTHESIS
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    $default  reduce using rule 71 (arguments)
+
+    expression   go to state 88
+    conjunction  go to state 34
+    disjunction  go to state 35
+    inversion    go to state 36
+    comparison   go to state 37
+    sum          go to state 38
+    term         go to state 39
+    factor       go to state 40
+    power        go to state 41
+    primary      go to state 42
+    arguments    go to state 107
+    atom         go to state 43
+    array        go to state 44
+
+
+state 83
+
+   61 power: primary TOKEN_POWER . factor
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    factor   go to state 108
+    power    go to state 41
+    primary  go to state 42
+    atom     go to state 43
+    array    go to state 44
+
+
+state 84
+
+   63 primary: primary TOKEN_DOT . TOKEN_IDENTIFIER
+   64        | primary TOKEN_DOT . TOKEN_KEYWORD_COUNT
+   66        | primary TOKEN_DOT . TOKEN_SQUAREROOT TOKEN_LEFT_PARENTHESIS TOKEN_RIGHT_PARENTHESIS
+
+    TOKEN_KEYWORD_COUNT  shift, and go to state 109
+    TOKEN_SQUAREROOT     shift, and go to state 110
+    TOKEN_IDENTIFIER     shift, and go to state 111
+
+
+state 85
+
+   17 for_stmt: TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER TOKEN_KEYWORD_IN . TOKEN_RANGE TOKEN_IDENTIFIER TOKEN_LEFT_BRACE statements TOKEN_RIGHT_BRACE
+   18         | TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER TOKEN_KEYWORD_IN . TOKEN_IDENTIFIER TOKEN_LEFT_BRACE statements TOKEN_RIGHT_BRACE
+
+    TOKEN_IDENTIFIER  shift, and go to state 112
+    TOKEN_RANGE       shift, and go to state 113
+
+
+state 86
+
+    9 if_stmt: TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE . block TOKEN_RIGHT_BRACE elif_stmt
+   10        | TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE . block TOKEN_RIGHT_BRACE else_block
+   11        | TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE . block TOKEN_RIGHT_BRACE
+
+    TOKEN_NEWLINE  shift, and go to state 114
+
+    block  go to state 115
+
+
+state 87
+
+   22 assignment: TOKEN_KEYWORD_LET TOKEN_IDENTIFIER TOKEN_ASSIGNMENT . expression
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    expression   go to state 116
+    conjunction  go to state 34
+    disjunction  go to state 35
+    inversion    go to state 36
+    comparison   go to state 37
+    sum          go to state 38
+    term         go to state 39
+    factor       go to state 40
+    power        go to state 41
+    primary      go to state 42
+    atom         go to state 43
+    array        go to state 44
+
+
+state 88
+
+   70 arguments: expression .
+
+    $default  reduce using rule 70 (arguments)
+
+
+state 89
+
+   35 print_stmt: TOKEN_KEYWORD_PRINT TOKEN_LEFT_PARENTHESIS arguments . TOKEN_RIGHT_PARENTHESIS
+   69 arguments: arguments . TOKEN_COMMA expression
+
+    TOKEN_RIGHT_PARENTHESIS  shift, and go to state 117
+    TOKEN_COMMA              shift, and go to state 118
+
+
+state 90
+
+   23 assignment: TOKEN_KEYWORD_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT . expression
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    expression   go to state 119
+    conjunction  go to state 34
+    disjunction  go to state 35
+    inversion    go to state 36
+    comparison   go to state 37
+    sum          go to state 38
+    term         go to state 39
+    factor       go to state 40
+    power        go to state 41
+    primary      go to state 42
+    atom         go to state 43
+    array        go to state 44
+
+
+state 91
+
+   16 while_stmt: TOKEN_KEYWORD_WHILE named_expression TOKEN_LEFT_BRACE . block TOKEN_RIGHT_BRACE
+
+    TOKEN_NEWLINE  shift, and go to state 114
+
+    block  go to state 120
+
+
+state 92
+
+   26 array_element: TOKEN_IDENTIFIER TOKEN_LEFT_BRACKET expression . TOKEN_RIGHT_BRACKET
+   67 primary: TOKEN_IDENTIFIER TOKEN_LEFT_BRACKET expression . TOKEN_RIGHT_BRACKET
+
+    TOKEN_RIGHT_BRACKET  shift, and go to state 121
+
+
+state 93
+
+   24 assignment: TOKEN_IDENTIFIER TOKEN_ASSIGNMENT expression .
+
+    $default  reduce using rule 24 (assignment)
+
+
+state 94
+
+   67 primary: TOKEN_IDENTIFIER TOKEN_LEFT_BRACKET . expression TOKEN_RIGHT_BRACKET
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    expression   go to state 122
+    conjunction  go to state 34
+    disjunction  go to state 35
+    inversion    go to state 36
+    comparison   go to state 37
+    sum          go to state 38
+    term         go to state 39
+    factor       go to state 40
+    power        go to state 41
+    primary      go to state 42
+    atom         go to state 43
+    array        go to state 44
+
+
+state 95
+
+   78 atom: TOKEN_LEFT_PARENTHESIS expression TOKEN_RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 78 (atom)
+
+
+state 96
+
+   80 array: TOKEN_LEFT_BRACKET elements TOKEN_RIGHT_BRACKET .
+
+    $default  reduce using rule 80 (array)
+
+
+state 97
+
+   81 elements: elements TOKEN_COMMA . atom
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 58
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    atom   go to state 123
+    array  go to state 44
+
+
+state 98
+
+   25 assignment: array_element TOKEN_ASSIGNMENT expression .
+
+    $default  reduce using rule 25 (assignment)
+
+
+state 99
+
+   27 expressions: expressions TOKEN_COMMA expression .
+
+    $default  reduce using rule 27 (expressions)
+
+
+state 100
+
+   38 conjunction: conjunction TOKEN_AND disjunction .
+   40 disjunction: disjunction . TOKEN_OR inversion
+
+    TOKEN_OR  shift, and go to state 70
+
+    $default  reduce using rule 38 (conjunction)
+
+
+state 101
+
+   40 disjunction: disjunction TOKEN_OR inversion .
+
+    $default  reduce using rule 40 (disjunction)
+
+
+state 102
+
+   53 sum: sum TOKEN_MINUS term .
+   55 term: term . TOKEN_MULTIPLY factor
+   56     | term . TOKEN_DIVIDE factor
+
+    TOKEN_MULTIPLY  shift, and go to state 80
+    TOKEN_DIVIDE    shift, and go to state 81
+
+    $default  reduce using rule 53 (sum)
+
+
+state 103
+
+   52 sum: sum TOKEN_PLUS term .
+   55 term: term . TOKEN_MULTIPLY factor
+   56     | term . TOKEN_DIVIDE factor
+
+    TOKEN_MULTIPLY  shift, and go to state 80
+    TOKEN_DIVIDE    shift, and go to state 81
+
+    $default  reduce using rule 52 (sum)
+
+
+state 104
+
+   44 comparison: sum comparison_op sum .
+   52 sum: sum . TOKEN_PLUS term
+   53    | sum . TOKEN_MINUS term
+
+    TOKEN_MINUS  shift, and go to state 72
+    TOKEN_PLUS   shift, and go to state 73
+
+    $default  reduce using rule 44 (comparison)
+
+
+state 105
+
+   55 term: term TOKEN_MULTIPLY factor .
+
+    $default  reduce using rule 55 (term)
+
+
+state 106
+
+   56 term: term TOKEN_DIVIDE factor .
+
+    $default  reduce using rule 56 (term)
+
+
+state 107
+
+   65 primary: primary TOKEN_LEFT_PARENTHESIS arguments . TOKEN_RIGHT_PARENTHESIS
+   69 arguments: arguments . TOKEN_COMMA expression
+
+    TOKEN_RIGHT_PARENTHESIS  shift, and go to state 124
+    TOKEN_COMMA              shift, and go to state 118
+
+
+state 108
+
+   61 power: primary TOKEN_POWER factor .
+
+    $default  reduce using rule 61 (power)
+
+
+state 109
+
+   64 primary: primary TOKEN_DOT TOKEN_KEYWORD_COUNT .
+
+    $default  reduce using rule 64 (primary)
+
+
+state 110
+
+   66 primary: primary TOKEN_DOT TOKEN_SQUAREROOT . TOKEN_LEFT_PARENTHESIS TOKEN_RIGHT_PARENTHESIS
+
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 125
+
+
+state 111
+
+   63 primary: primary TOKEN_DOT TOKEN_IDENTIFIER .
+
+    $default  reduce using rule 63 (primary)
+
+
+state 112
+
+   18 for_stmt: TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER TOKEN_KEYWORD_IN TOKEN_IDENTIFIER . TOKEN_LEFT_BRACE statements TOKEN_RIGHT_BRACE
+
+    TOKEN_LEFT_BRACE  shift, and go to state 126
+
+
+state 113
+
+   17 for_stmt: TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER TOKEN_KEYWORD_IN TOKEN_RANGE . TOKEN_IDENTIFIER TOKEN_LEFT_BRACE statements TOKEN_RIGHT_BRACE
+
+    TOKEN_IDENTIFIER  shift, and go to state 127
+
+
+state 114
+
+   19 block: TOKEN_NEWLINE . statements
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_FOR       shift, and go to state 2
+    TOKEN_KEYWORD_IF        shift, and go to state 3
+    TOKEN_KEYWORD_IMPORT    shift, and go to state 4
+    TOKEN_KEYWORD_LET       shift, and go to state 5
+    TOKEN_KEYWORD_PRINT     shift, and go to state 6
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_KEYWORD_VAR       shift, and go to state 8
+    TOKEN_KEYWORD_WHILE     shift, and go to state 9
+    TOKEN_IDENTIFIER        shift, and go to state 10
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    $default  reduce using rule 34 (simple_stmt)
+
+    statements     go to state 128
+    statement      go to state 21
+    compound_stmt  go to state 22
+    if_stmt        go to state 23
+    while_stmt     go to state 24
+    for_stmt       go to state 25
+    assignment     go to state 26
+    array_element  go to state 27
+    expressions    go to state 28
+    simple_stmts   go to state 29
+    simple_stmt    go to state 30
+    print_stmt     go to state 31
+    import_stmt    go to state 32
+    expression     go to state 33
+    conjunction    go to state 34
+    disjunction    go to state 35
+    inversion      go to state 36
+    comparison     go to state 37
+    sum            go to state 38
+    term           go to state 39
+    factor         go to state 40
+    power          go to state 41
+    primary        go to state 42
+    atom           go to state 43
+    array          go to state 44
+
+
+state 115
+
+    9 if_stmt: TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block . TOKEN_RIGHT_BRACE elif_stmt
+   10        | TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block . TOKEN_RIGHT_BRACE else_block
+   11        | TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block . TOKEN_RIGHT_BRACE
+
+    TOKEN_RIGHT_BRACE  shift, and go to state 129
+
+
+state 116
+
+   22 assignment: TOKEN_KEYWORD_LET TOKEN_IDENTIFIER TOKEN_ASSIGNMENT expression .
+
+    $default  reduce using rule 22 (assignment)
+
+
+state 117
+
+   35 print_stmt: TOKEN_KEYWORD_PRINT TOKEN_LEFT_PARENTHESIS arguments TOKEN_RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 35 (print_stmt)
+
+
+state 118
+
+   69 arguments: arguments TOKEN_COMMA . expression
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_IDENTIFIER        shift, and go to state 56
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    expression   go to state 130
+    conjunction  go to state 34
+    disjunction  go to state 35
+    inversion    go to state 36
+    comparison   go to state 37
+    sum          go to state 38
+    term         go to state 39
+    factor       go to state 40
+    power        go to state 41
+    primary      go to state 42
+    atom         go to state 43
+    array        go to state 44
+
+
+state 119
+
+   23 assignment: TOKEN_KEYWORD_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT expression .
+
+    $default  reduce using rule 23 (assignment)
+
+
+state 120
+
+   16 while_stmt: TOKEN_KEYWORD_WHILE named_expression TOKEN_LEFT_BRACE block . TOKEN_RIGHT_BRACE
+
+    TOKEN_RIGHT_BRACE  shift, and go to state 131
+
+
+state 121
+
+   26 array_element: TOKEN_IDENTIFIER TOKEN_LEFT_BRACKET expression TOKEN_RIGHT_BRACKET .
+   67 primary: TOKEN_IDENTIFIER TOKEN_LEFT_BRACKET expression TOKEN_RIGHT_BRACKET .
+
+    TOKEN_ASSIGNMENT  reduce using rule 26 (array_element)
+    $default          reduce using rule 67 (primary)
+
+
+state 122
+
+   67 primary: TOKEN_IDENTIFIER TOKEN_LEFT_BRACKET expression . TOKEN_RIGHT_BRACKET
+
+    TOKEN_RIGHT_BRACKET  shift, and go to state 132
+
+
+state 123
+
+   81 elements: elements TOKEN_COMMA atom .
+
+    $default  reduce using rule 81 (elements)
+
+
+state 124
+
+   65 primary: primary TOKEN_LEFT_PARENTHESIS arguments TOKEN_RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 65 (primary)
+
+
+state 125
+
+   66 primary: primary TOKEN_DOT TOKEN_SQUAREROOT TOKEN_LEFT_PARENTHESIS . TOKEN_RIGHT_PARENTHESIS
+
+    TOKEN_RIGHT_PARENTHESIS  shift, and go to state 133
+
+
+state 126
+
+   18 for_stmt: TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER TOKEN_KEYWORD_IN TOKEN_IDENTIFIER TOKEN_LEFT_BRACE . statements TOKEN_RIGHT_BRACE
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_FOR       shift, and go to state 2
+    TOKEN_KEYWORD_IF        shift, and go to state 3
+    TOKEN_KEYWORD_IMPORT    shift, and go to state 4
+    TOKEN_KEYWORD_LET       shift, and go to state 5
+    TOKEN_KEYWORD_PRINT     shift, and go to state 6
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_KEYWORD_VAR       shift, and go to state 8
+    TOKEN_KEYWORD_WHILE     shift, and go to state 9
+    TOKEN_IDENTIFIER        shift, and go to state 10
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    $default  reduce using rule 34 (simple_stmt)
+
+    statements     go to state 134
+    statement      go to state 21
+    compound_stmt  go to state 22
+    if_stmt        go to state 23
+    while_stmt     go to state 24
+    for_stmt       go to state 25
+    assignment     go to state 26
+    array_element  go to state 27
+    expressions    go to state 28
+    simple_stmts   go to state 29
+    simple_stmt    go to state 30
+    print_stmt     go to state 31
+    import_stmt    go to state 32
+    expression     go to state 33
+    conjunction    go to state 34
+    disjunction    go to state 35
+    inversion      go to state 36
+    comparison     go to state 37
+    sum            go to state 38
+    term           go to state 39
+    factor         go to state 40
+    power          go to state 41
+    primary        go to state 42
+    atom           go to state 43
+    array          go to state 44
+
+
+state 127
+
+   17 for_stmt: TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER TOKEN_KEYWORD_IN TOKEN_RANGE TOKEN_IDENTIFIER . TOKEN_LEFT_BRACE statements TOKEN_RIGHT_BRACE
+
+    TOKEN_LEFT_BRACE  shift, and go to state 135
+
+
+state 128
+
+    2 statements: statements . statement
+   19 block: TOKEN_NEWLINE statements .
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_FOR       shift, and go to state 2
+    TOKEN_KEYWORD_IF        shift, and go to state 3
+    TOKEN_KEYWORD_IMPORT    shift, and go to state 4
+    TOKEN_KEYWORD_LET       shift, and go to state 5
+    TOKEN_KEYWORD_PRINT     shift, and go to state 6
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_KEYWORD_VAR       shift, and go to state 8
+    TOKEN_KEYWORD_WHILE     shift, and go to state 9
+    TOKEN_IDENTIFIER        shift, and go to state 10
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    TOKEN_NEWLINE  reduce using rule 34 (simple_stmt)
+    $default       reduce using rule 19 (block)
+
+    statement      go to state 65
+    compound_stmt  go to state 22
+    if_stmt        go to state 23
+    while_stmt     go to state 24
+    for_stmt       go to state 25
+    assignment     go to state 26
+    array_element  go to state 27
+    expressions    go to state 28
+    simple_stmts   go to state 29
+    simple_stmt    go to state 30
+    print_stmt     go to state 31
+    import_stmt    go to state 32
+    expression     go to state 33
+    conjunction    go to state 34
+    disjunction    go to state 35
+    inversion      go to state 36
+    comparison     go to state 37
+    sum            go to state 38
+    term           go to state 39
+    factor         go to state 40
+    power          go to state 41
+    primary        go to state 42
+    atom           go to state 43
+    array          go to state 44
+
+
+state 129
+
+    9 if_stmt: TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE . elif_stmt
+   10        | TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE . else_block
+   11        | TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE .
+
+    TOKEN_KEYWORD_ELSE  shift, and go to state 136
+
+    $default  reduce using rule 11 (if_stmt)
+
+    elif_stmt   go to state 137
+    else_block  go to state 138
+
+
+state 130
+
+   69 arguments: arguments TOKEN_COMMA expression .
+
+    $default  reduce using rule 69 (arguments)
+
+
+state 131
+
+   16 while_stmt: TOKEN_KEYWORD_WHILE named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE .
+
+    $default  reduce using rule 16 (while_stmt)
+
+
+state 132
+
+   67 primary: TOKEN_IDENTIFIER TOKEN_LEFT_BRACKET expression TOKEN_RIGHT_BRACKET .
+
+    $default  reduce using rule 67 (primary)
+
+
+state 133
+
+   66 primary: primary TOKEN_DOT TOKEN_SQUAREROOT TOKEN_LEFT_PARENTHESIS TOKEN_RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 66 (primary)
+
+
+state 134
+
+    2 statements: statements . statement
+   18 for_stmt: TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER TOKEN_KEYWORD_IN TOKEN_IDENTIFIER TOKEN_LEFT_BRACE statements . TOKEN_RIGHT_BRACE
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_FOR       shift, and go to state 2
+    TOKEN_KEYWORD_IF        shift, and go to state 3
+    TOKEN_KEYWORD_IMPORT    shift, and go to state 4
+    TOKEN_KEYWORD_LET       shift, and go to state 5
+    TOKEN_KEYWORD_PRINT     shift, and go to state 6
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_KEYWORD_VAR       shift, and go to state 8
+    TOKEN_KEYWORD_WHILE     shift, and go to state 9
+    TOKEN_IDENTIFIER        shift, and go to state 10
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_RIGHT_BRACE       shift, and go to state 139
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    $default  reduce using rule 34 (simple_stmt)
+
+    statement      go to state 65
+    compound_stmt  go to state 22
+    if_stmt        go to state 23
+    while_stmt     go to state 24
+    for_stmt       go to state 25
+    assignment     go to state 26
+    array_element  go to state 27
+    expressions    go to state 28
+    simple_stmts   go to state 29
+    simple_stmt    go to state 30
+    print_stmt     go to state 31
+    import_stmt    go to state 32
+    expression     go to state 33
+    conjunction    go to state 34
+    disjunction    go to state 35
+    inversion      go to state 36
+    comparison     go to state 37
+    sum            go to state 38
+    term           go to state 39
+    factor         go to state 40
+    power          go to state 41
+    primary        go to state 42
+    atom           go to state 43
+    array          go to state 44
+
+
+state 135
+
+   17 for_stmt: TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER TOKEN_KEYWORD_IN TOKEN_RANGE TOKEN_IDENTIFIER TOKEN_LEFT_BRACE . statements TOKEN_RIGHT_BRACE
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_FOR       shift, and go to state 2
+    TOKEN_KEYWORD_IF        shift, and go to state 3
+    TOKEN_KEYWORD_IMPORT    shift, and go to state 4
+    TOKEN_KEYWORD_LET       shift, and go to state 5
+    TOKEN_KEYWORD_PRINT     shift, and go to state 6
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_KEYWORD_VAR       shift, and go to state 8
+    TOKEN_KEYWORD_WHILE     shift, and go to state 9
+    TOKEN_IDENTIFIER        shift, and go to state 10
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    $default  reduce using rule 34 (simple_stmt)
+
+    statements     go to state 140
+    statement      go to state 21
+    compound_stmt  go to state 22
+    if_stmt        go to state 23
+    while_stmt     go to state 24
+    for_stmt       go to state 25
+    assignment     go to state 26
+    array_element  go to state 27
+    expressions    go to state 28
+    simple_stmts   go to state 29
+    simple_stmt    go to state 30
+    print_stmt     go to state 31
+    import_stmt    go to state 32
+    expression     go to state 33
+    conjunction    go to state 34
+    disjunction    go to state 35
+    inversion      go to state 36
+    comparison     go to state 37
+    sum            go to state 38
+    term           go to state 39
+    factor         go to state 40
+    power          go to state 41
+    primary        go to state 42
+    atom           go to state 43
+    array          go to state 44
+
+
+state 136
+
+   12 elif_stmt: TOKEN_KEYWORD_ELSE . TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE elif_stmt
+   13          | TOKEN_KEYWORD_ELSE . TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE else_block
+   14          | TOKEN_KEYWORD_ELSE . TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE
+   15 else_block: TOKEN_KEYWORD_ELSE . TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE
+
+    TOKEN_KEYWORD_IF  shift, and go to state 141
+    TOKEN_LEFT_BRACE  shift, and go to state 142
+
+
+state 137
+
+    9 if_stmt: TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE elif_stmt .
+
+    $default  reduce using rule 9 (if_stmt)
+
+
+state 138
+
+   10 if_stmt: TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE else_block .
+
+    $default  reduce using rule 10 (if_stmt)
+
+
+state 139
+
+   18 for_stmt: TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER TOKEN_KEYWORD_IN TOKEN_IDENTIFIER TOKEN_LEFT_BRACE statements TOKEN_RIGHT_BRACE .
+
+    $default  reduce using rule 18 (for_stmt)
+
+
+state 140
+
+    2 statements: statements . statement
+   17 for_stmt: TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER TOKEN_KEYWORD_IN TOKEN_RANGE TOKEN_IDENTIFIER TOKEN_LEFT_BRACE statements . TOKEN_RIGHT_BRACE
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_FOR       shift, and go to state 2
+    TOKEN_KEYWORD_IF        shift, and go to state 3
+    TOKEN_KEYWORD_IMPORT    shift, and go to state 4
+    TOKEN_KEYWORD_LET       shift, and go to state 5
+    TOKEN_KEYWORD_PRINT     shift, and go to state 6
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_KEYWORD_VAR       shift, and go to state 8
+    TOKEN_KEYWORD_WHILE     shift, and go to state 9
+    TOKEN_IDENTIFIER        shift, and go to state 10
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_RIGHT_BRACE       shift, and go to state 143
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    $default  reduce using rule 34 (simple_stmt)
+
+    statement      go to state 65
+    compound_stmt  go to state 22
+    if_stmt        go to state 23
+    while_stmt     go to state 24
+    for_stmt       go to state 25
+    assignment     go to state 26
+    array_element  go to state 27
+    expressions    go to state 28
+    simple_stmts   go to state 29
+    simple_stmt    go to state 30
+    print_stmt     go to state 31
+    import_stmt    go to state 32
+    expression     go to state 33
+    conjunction    go to state 34
+    disjunction    go to state 35
+    inversion      go to state 36
+    comparison     go to state 37
+    sum            go to state 38
+    term           go to state 39
+    factor         go to state 40
+    power          go to state 41
+    primary        go to state 42
+    atom           go to state 43
+    array          go to state 44
+
+
+state 141
+
+   12 elif_stmt: TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF . named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE elif_stmt
+   13          | TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF . named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE else_block
+   14          | TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF . named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE
+
+    TOKEN_KEYWORD_FALSE     shift, and go to state 1
+    TOKEN_KEYWORD_LET       shift, and go to state 5
+    TOKEN_KEYWORD_TRUE      shift, and go to state 7
+    TOKEN_KEYWORD_VAR       shift, and go to state 8
+    TOKEN_IDENTIFIER        shift, and go to state 10
+    TOKEN_INTEGER           shift, and go to state 11
+    TOKEN_LEFT_PARENTHESIS  shift, and go to state 12
+    TOKEN_LEFT_BRACKET      shift, and go to state 13
+    TOKEN_STRING            shift, and go to state 14
+    TOKEN_MINUS             shift, and go to state 15
+    TOKEN_PLUS              shift, and go to state 16
+    TOKEN_NOT               shift, and go to state 17
+    TOKEN_DOUBLE            shift, and go to state 18
+
+    named_expression  go to state 144
+    assignment        go to state 47
+    array_element     go to state 27
+    expression        go to state 48
+    conjunction       go to state 34
+    disjunction       go to state 35
+    inversion         go to state 36
+    comparison        go to state 37
+    sum               go to state 38
+    term              go to state 39
+    factor            go to state 40
+    power             go to state 41
+    primary           go to state 42
+    atom              go to state 43
+    array             go to state 44
+
+
+state 142
+
+   15 else_block: TOKEN_KEYWORD_ELSE TOKEN_LEFT_BRACE . block TOKEN_RIGHT_BRACE
+
+    TOKEN_NEWLINE  shift, and go to state 114
+
+    block  go to state 145
+
+
+state 143
+
+   17 for_stmt: TOKEN_KEYWORD_FOR TOKEN_IDENTIFIER TOKEN_KEYWORD_IN TOKEN_RANGE TOKEN_IDENTIFIER TOKEN_LEFT_BRACE statements TOKEN_RIGHT_BRACE .
+
+    $default  reduce using rule 17 (for_stmt)
+
+
+state 144
+
+   12 elif_stmt: TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression . TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE elif_stmt
+   13          | TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression . TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE else_block
+   14          | TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression . TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE
+
+    TOKEN_LEFT_BRACE  shift, and go to state 146
+
+
+state 145
+
+   15 else_block: TOKEN_KEYWORD_ELSE TOKEN_LEFT_BRACE block . TOKEN_RIGHT_BRACE
+
+    TOKEN_RIGHT_BRACE  shift, and go to state 147
+
+
+state 146
+
+   12 elif_stmt: TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE . block TOKEN_RIGHT_BRACE elif_stmt
+   13          | TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE . block TOKEN_RIGHT_BRACE else_block
+   14          | TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE . block TOKEN_RIGHT_BRACE
+
+    TOKEN_NEWLINE  shift, and go to state 114
+
+    block  go to state 148
+
+
+state 147
+
+   15 else_block: TOKEN_KEYWORD_ELSE TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE .
+
+    $default  reduce using rule 15 (else_block)
+
+
+state 148
+
+   12 elif_stmt: TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block . TOKEN_RIGHT_BRACE elif_stmt
+   13          | TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block . TOKEN_RIGHT_BRACE else_block
+   14          | TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block . TOKEN_RIGHT_BRACE
+
+    TOKEN_RIGHT_BRACE  shift, and go to state 149
+
+
+state 149
+
+   12 elif_stmt: TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE . elif_stmt
+   13          | TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE . else_block
+   14          | TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE .
+
+    TOKEN_KEYWORD_ELSE  shift, and go to state 136
+
+    $default  reduce using rule 14 (elif_stmt)
+
+    elif_stmt   go to state 150
+    else_block  go to state 151
+
+
+state 150
+
+   12 elif_stmt: TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE elif_stmt .
+
+    $default  reduce using rule 12 (elif_stmt)
+
+
+state 151
+
+   13 elif_stmt: TOKEN_KEYWORD_ELSE TOKEN_KEYWORD_IF named_expression TOKEN_LEFT_BRACE block TOKEN_RIGHT_BRACE else_block .
+
+    $default  reduce using rule 13 (elif_stmt)
